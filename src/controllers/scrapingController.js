@@ -6,11 +6,27 @@ const { rastrearGuiaCopetran } = require('../services/scrapingService');
  */
 async function rastrearGuia(req, res) {
   try {
-    const numeroGuia = req.body.numeroGuia || req.params.numero;
+    // Mejor extracción del número de guía
+    const numeroGuia = req.params.numero || req.body.numeroGuia || req.query.numero;
+
+    console.log('📦 Parámetros recibidos:', {
+      params: req.params,
+      body: req.body,
+      query: req.query,
+      numeroGuia
+    });
 
     if (!numeroGuia) {
-      return res.status(400).json({ error: 'Número de guía es requerido' });
+      return res.status(400).json({ 
+        error: 'Número de guía es requerido',
+        recibido: {
+          params: req.params,
+          body: req.body
+        }
+      });
     }
+
+    // ... resto del código
 
     // Consultar Copetran
     const resultado = await rastrearGuiaCopetran(numeroGuia);
